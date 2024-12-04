@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #141e30, #243b55);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Full-Screen Centering */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            padding: 1rem;
+            box-sizing: border-box;
+        }
+
+        /* Header Section */
+        .header {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .header .logo-wrapper {
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            border-radius: 50%;
+            margin: 2.5rem auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header .logo {
+            width: 80%;
+            object-fit: cover;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Card Section */
+        .card {
+            background: #fff;
+            color: #333;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            margin: 0 auto;
+        }
+
+        /* Input Group */
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .input-group .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0 1rem;
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+
+        .input-group .toggle-btn:hover {
+            color: #0056b3;
+        }
+
+        /* Strength Meter */
+        .strength-meter {
+            background: #e0e0e0;
+            border-radius: 5px;
+            height: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .strength-meter span {
+            display: block;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(to right, #ff4b1f, #ff9068);
+            transition: width 0.3s ease, background 0.3s ease;
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .checklist li {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .checklist .valid {
+            color: #4caf50;
+        }
+
+        .checklist .invalid {
+            color: #f44336;
+        }
+
+        /* Result Text */
+        .result-text {
+            font-weight: 600;
+            margin-top: 1rem;
+            font-size: 1rem;
+        }
+
+        /* Full-Width Responsiveness */
+        @media screen and (max-width: 768px) {
+            .card {
+                padding: 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 1.6rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .card {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header with Logo -->
+        <div class="header">
+            <div class="logo-wrapper">
+                <img src="image.png" alt="Information Security Club Logo" class="logo">
+            </div>
+            <h1>Password Strength Checker</h1>
+            <p>Create a secure password and ensure it's strong enough!</p>
+        </div>
+
+        <!-- Password Input Section -->
+        <div class="card">
+            <div class="input-group">
+                <input
+                    type="password"
+                    id="passwordInput"
+                    placeholder="Type your password"
+                    oninput="checkPassword()"
+                />
+                <button class="toggle-btn" onclick="togglePasswordVisibility()">👁️</button>
+            </div>
+
+            <!-- Password Strength Bar -->
+            <div class="strength-meter">
+                <span id="strengthBar"></span>
+            </div>
+
+            <!-- Checklist for Password Requirements -->
+            <ul class="checklist">
+                <li id="length" class="invalid">At least 10 characters</li>
+                <li id="uppercase" class="invalid">Contains an uppercase letter</li>
+                <li id="lowercase" class="invalid">Contains a lowercase letter</li>
+                <li id="number" class="invalid">Contains a number</li>
+                <li id="special" class="invalid">Contains a special character</li>
+                <li id="sequential" class="invalid">No sequential characters</li>
+            </ul>
+
+            <!-- Result -->
+            <p id="result" class="result-text">Start typing to check your password's strength!</p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById("passwordInput");
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
+
+        // Check password strength
+        function checkPassword() {
+            const password = document.getElementById("passwordInput").value;
+            const strengthBar = document.getElementById("strengthBar");
+            const result = document.getElementById("result");
+
+            // Criteria
+            const hasLength = password.length >= 10;
+            const hasUppercase = /[A-Z]/.test(password);
+            const hasLowercase = /[a-z]/.test(password);
+            const hasNumber = /[0-9]/.test(password);
+            const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const noSequential = !/abc|123|456|789/.test(password);
+
+            // Update checklist
+            updateChecklist("length", hasLength);
+            updateChecklist("uppercase", hasUppercase);
+            updateChecklist("lowercase", hasLowercase);
+            updateChecklist("number", hasNumber);
+            updateChecklist("special", hasSpecial);
+            updateChecklist("sequential", noSequential);
+
+            // Calculate strength
+            const criteria = [hasLength, hasUppercase, hasLowercase, hasNumber, hasSpecial, noSequential];
+            const strength = criteria.filter(Boolean).length;
+
+            // Update progress bar
+            strengthBar.style.width = (strength / 6) * 100 + "%";
+            strengthBar.style.background = strength <= 2 ? "#ff4b1f" : strength <= 4 ? "#ffc107" : "#4caf50";
+
+            // Update result text
+            result.textContent =
+                strength <= 2
+                    ? "Weak Password"
+                    : strength <= 4
+                    ? "Moderate Password"
+                    : "Strong Password!";
+        }
+
+        // Update checklist
+        function updateChecklist(id, isValid) {
+            const element = document.getElementById(id);
+            element.classList.toggle("valid", isValid);
+            element.classList.toggle("invalid", !isValid);
+        }
+    </script>
+</body>
+</html>
