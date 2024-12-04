@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Strength Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+            background: black;
+            background-image: url('نادي امن المعلومات ابيض.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .container {
+            max-width: 400px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background-color: #28a745;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Password Strength Checker</h1>
+        <input type="password" id="password" placeholder="Enter your password" />
+        <button onclick="checkPassword()">Check Password</button>
+        <button onclick="tryAgain()">Try Again</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function containsSequential(password) {
+            const lowerPassword = password.toLowerCase();
+            for (let i = 0; i < lowerPassword.length - 2; i++) {
+                const first = lowerPassword.charCodeAt(i);
+                const second = lowerPassword.charCodeAt(i + 1);
+                const third = lowerPassword.charCodeAt(i + 2);
+                if (second === first + 1 && third === second + 1) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function isStrongPassword(password) {
+            if (password.length < 10) return false;
+
+            let hasUpperCase = false,
+                hasLowerCase = false,
+                hasDigit = false,
+                hasSpecialChar = false;
+
+            for (let char of password) {
+                if (/[A-Z]/.test(char)) hasUpperCase = true;
+                else if (/[a-z]/.test(char)) hasLowerCase = true;
+                else if (/[0-9]/.test(char)) hasDigit = true;
+                else if (/[_\.@*]/.test(char)) hasSpecialChar = true;
+            }
+
+            if (!hasUpperCase || !hasLowerCase || !hasDigit || !hasSpecialChar) return false;
+
+            if (containsSequential(password)) return false;
+
+            return true;
+        }
+
+        function checkPassword() {
+            const password = document.getElementById("password").value;
+            const resultDiv = document.getElementById("result");
+
+            if (isStrongPassword(password)) {
+                resultDiv.textContent = "Win! The password is strong.";
+                resultDiv.style.color = "green";
+            } else {
+                resultDiv.textContent = "Loss! The password is weak.";
+                resultDiv.style.color = "red";
+            }
+        }
+
+        function tryAgain() {
+            document.getElementById("password").value = "";
+            document.getElementById("result").textContent = "";
+        }
+    </script>
+</body>
+</html>
