@@ -1,0 +1,112 @@
+/* General Styles */ 
+body { 
+    font-family: 'Poppins', sans-serif; 
+    margin: 0; 
+    padding: 0; 
+    background: linear-gradient(to right, #1e3c72, #2a5298); 
+    color: #f5f5f5; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+} 
+ 
+/* Main Container */ 
+.main-container { 
+    width: 100%; 
+    max-width: 400px; 
+    background: #ffffff; 
+    color: #333; 
+    padding: 2rem; 
+    border-radius: 15px; 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); 
+    text-align: center; 
+} 
+ 
+/* Header Section */ 
+.header { 
+    margin-bottom: 2rem; 
+} 
+ 
+.header .logo { 
+    width: 80px; 
+    margin-bottom: 1rem; 
+} 
+ 
+.header h1 { 
+    font-size: 1.8rem; 
+    font-weight: 600; 
+    margin-bottom: 0.5rem; 
+    color: #1e3c72; 
+} 
+ 
+.header p { 
+    font-size: 0.9rem; 
+    color: #555; 
+} 
+ 
+/* Form Section */ 
+.form-container { 
+    width: 100%; 
+} 
+ 
+.input-group { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    margin-bottom: 1rem; 
+    background: #f8f8f8; 
+    border-radius: 8px; 
+    overflow: hidden; 
+    border: 1px solid #ccc; 
+} 
+ 
+.input-group input { 
+    width: 70%; 
+    border: none; 
+    outline: none; 
+    padding: 0.8rem; 
+    font-size: 1rem; 
+    color: #555; 
+    background: none; 
+} 
+ 
+.input-group button { 
+    width: 30%; 
+    border: none; 
+    background: #1e3c72; 
+    color: #fff; 
+    font-weight: 600; 
+    font-size: 1rem; 
+    padding: 0.8rem; 
+    cursor: pointer; 
+    transition: background 0.3s ease; 
+} 
+ 
+.input-group button:hover { 
+    background: #2a5298; 
+} 
+ 
+/* Progress Bar */ 
+.progress-bar { 
+    background: #f0f0f0; 
+    height: 10px; 
+    border-radius: 5px; 
+    overflow: hidden; 
+    margin-bottom: 1rem; 
+} 
+ 
+#strengthBar { 
+    width: 0; 
+    height: 100%; 
+    background: linear-gradient(to right, #ff4b1f, #ff9068); 
+    transition: width 0.4s ease; 
+} 
+ 
+/* Result Text */ 
+#result { 
+    font-size: 1rem; 
+    font-weight: 600; 
+    margin-top: 1rem; 
+    color: #1e3c72; 
+}
